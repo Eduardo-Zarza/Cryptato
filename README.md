@@ -24,10 +24,5 @@ Ejemplos de uso estarán disponibles conforme avance el desarrollo.
 🤝 Contribuciones
 Si deseas contribuir a Cryptato, sigue estos pasos:
 
-Haz un fork del repositorio
-Crea una nueva rama (git checkout -b feature-nombre)
-Realiza cambios y haz commit (git commit -m "Descripción del cambio")
-Sube tus cambios (git push origin feature-nombre)
-Abre un Pull Request
 📜 Licencia
 Este proyecto está bajo la licencia MIT.
