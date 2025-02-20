@@ -1,6 +1,9 @@
 # Cryptato
 🏦 Cryptato
 Un asistente inteligente para invertir en criptomonedas
+Erick Solis Zamacona - 174086
+José Eduardo Zarza Pineda - 176220
+
 
 📖 Descripción
 Cryptato es una aplicación diseñada para ayudar a los usuarios a tomar decisiones informadas en el mundo de las criptomonedas. Utilizando machine learning y datos en vivo, el sistema proporciona análisis y predicciones sobre el mercado cripto.
