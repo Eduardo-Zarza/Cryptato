@@ -1,19 +1,16 @@
-const { Spot } = require('@binance/connector');
-const client = new Spot();
+const express = require('express');
+const { httpGetGraphicData } = require('../controllers/graphicdata.controller');
 
-async function getGraphicData() {
-  try {
-    const symbol = 'BTCUSDT';
-    const interval = '1m'; // 1-minute interval to get minute-by-minute data
-    const limit = 20; // Get the last 10 minutes of data
+const graphicdataRouter = express.Router();
 
-    // Fetch Kline (candlestick) data
-    const response = await client.klines(symbol, interval, { limit });
+graphicdataRouter.get('/graphicdata', async (req, res) => {
+    const limit = parseInt(req.query.limit) || 20; // Default to 20 if not provided
+    try {
+        const data = await httpGetGraphicData(limit);
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching data', details: error.message });
+    }
+});
 
-     return response.data;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-module.exports= getGraphicData;
+module.exports = graphicdataRouter;

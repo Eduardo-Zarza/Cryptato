@@ -1,28 +1,13 @@
 import React from 'react';
-import Plot from 'react-plotly.js';
+import useGraphicData from './hooks/usegraphicdata';
+import Chart from './components/chart';
 
 const App = () => {
+    const { chartData, loading, error, loadMoreData } = useGraphicData();
+
     return (
         <div>
-            <h2>      BTC/USDT Candlestick Chart</h2>
-            <Plot
-                data={[
-                    {
-                        x: [], // Empty x-axis (time)
-                        open: [],
-                        high: [],
-                        low: [],
-                        close: [],
-                        type: 'candlestick',
-                    }
-                ]}
-                layout={{
-                    title: 'BTC/USDT Candlestick Chart',
-                    xaxis: { type: 'date', title: 'Time' },
-                    yaxis: { title: 'Price (USDT)' }
-                }}
-                style={{ width: '100%', height: '500px' }}
-            />
+            <Chart chartData={chartData} loading={loading} error={error} loadMoreData={loadMoreData} />
         </div>
     );
 };

@@ -1,15 +1,13 @@
-const getGraphicData = require('../../models/graphicdata.model');
+const getGraphicData = require('../models/graphicdata.model');
 
-
-async function httpGetGraphicData(req, res){
+async function httpGetGraphicData(limit) {
     try {
-        const data = await getGraphicData(); // Esperamos la promesa
-        res.status(200).json(data); // Devolvemos los datos obtenidos
+        return await getGraphicData(limit);
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener datos de Binance', details: error.message });
+        throw new Error(error.message);
     }
 }
 
-module.exports={
+module.exports = {
     httpGetGraphicData
-}
+};
