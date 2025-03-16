@@ -1,16 +1,22 @@
-const express = require('express');
-const { httpGetGraphicData } = require('../controllers/graphicdata.controller');
+const { Spot } = require('@binance/connector');
+const client = new Spot();
 
-const graphicdataRouter = express.Router();
-
-graphicdataRouter.get('/graphicdata', async (req, res) => {
-    const limit = parseInt(req.query.limit) || 20; // Default to 20 if not provided
+async function getGraphicData(limit = 20) {
     try {
-        const data = await httpGetGraphicData(limit);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: 'Error fetching data', details: error.message });
-    }
-});
+        const symbol = 'BTCUSDT';
+        const interval = '1m';
+        const validLimit = Number(limit); // Ensure limit is a number
 
-module.exports = graphicdataRouter;
+        if (isNaN(validLimit) || validLimit < 1 || validLimit > 1000) {
+            throw new Error("Invalid limit value. Must be a number between 1 and 1000.");
+        }
+
+        const response = await client.klines(symbol, interval, { limit: validLimit });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        throw error;
+    }
+}
+
+module.exports = getGraphicData;

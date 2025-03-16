@@ -1,6 +1,11 @@
 const getGraphicData = async (limit = 20) => {
     try {
-        const response = await fetch(`http://localhost:8000/graphicdata?limit=${limit}`);
+        const validLimit = Number(limit);
+        if (isNaN(validLimit) || validLimit < 1 || validLimit > 1000) {
+            throw new Error("Invalid limit value. Must be a number between 1 and 1000.");
+        }
+
+        const response = await fetch(`http://localhost:8000/graphicdata?limit=${validLimit}`);
         const data = await response.json();
 
         if (!Array.isArray(data)) {

@@ -1,16 +1,21 @@
-const { Spot } = require('@binance/connector');
-const client = new Spot();
+const express = require('express');
+const getGraphicData = require('../../models/graphicdata.model'); // Direct import from models
 
-async function getGraphicData(limit = 20) {
-    try {
-        const symbol = 'BTCUSDT';
-        const interval = '1m'; // 1-minute interval
-        const response = await client.klines(symbol, interval, { limit });
-        return response.data;
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
+const graphicdataRouter = express.Router();
+
+graphicdataRouter.get('/graphicdata', async (req, res) => {
+    let limit = parseInt(req.query.limit, 10);
+
+    if (isNaN(limit) || limit < 1 || limit > 1000) {
+        limit = 20; // Default to 20 if invalid
     }
-}
 
-module.exports = getGraphicData;
+    try {
+        const data = await getGraphicData(limit);
+        res.status(200).json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching data', details: error.message });
+    }
+});
+
+module.exports = graphicdataRouter;
