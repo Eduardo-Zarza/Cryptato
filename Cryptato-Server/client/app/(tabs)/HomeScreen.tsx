@@ -46,17 +46,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 36,
+    fontSize: 70,
     fontFamily: Fonts.bold,
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 25,
     fontFamily: Fonts.regular,
     textAlign: 'center',
     marginBottom: 30,
   },
   loginText: {
+    fontSize: 16,
     marginTop: 20,
     fontFamily: Fonts.medium,
   },

@@ -31,28 +31,30 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 30,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 89,
+    height: 89,
     marginRight: 15,
   },
   info: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'flex-end'
   },
   crypto: {
-    fontSize: 18,
+    fontSize: 22,
     fontFamily: Fonts.bold,
+    marginBottom: 10
   },
   variation: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.light.success,
     fontFamily: Fonts.medium,
   },
   price: {
-    fontSize: 16,
-    fontFamily: Fonts.medium,
+    fontSize: 20,
+    fontFamily: Fonts.bold,
   },
 });

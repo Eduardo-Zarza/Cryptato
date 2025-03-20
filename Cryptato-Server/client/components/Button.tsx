@@ -25,14 +25,15 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 15,
     paddingHorizontal: 25,
-    borderRadius: 12,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    height: '8%'
   },
   text: {
     color: '#FFFFFF',
-    fontSize: 16,
-    fontFamily: Fonts.medium,
+    fontSize: 18,
+    fontFamily: Fonts.bold,
   },
 });
