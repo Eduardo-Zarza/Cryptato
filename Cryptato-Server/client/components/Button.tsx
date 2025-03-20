@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: '8%'
+    height: '8%',
+    marginTop: 30
   },
   text: {
     color: '#FFFFFF',
