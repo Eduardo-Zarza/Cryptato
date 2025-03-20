@@ -50,12 +50,13 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
   title: {
-    fontSize: 32,
+    fontSize: 48,
     fontFamily: Fonts.bold,
     marginBottom: 20,
+    marginTop: 10
   },
   label: {
-    fontSize: 16,
+    fontSize: 24,
     fontFamily: Fonts.medium,
     marginTop: 15,
     marginBottom: 5,
@@ -85,13 +86,15 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 30,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 18,
+    height: '10%',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
-    fontFamily: Fonts.medium,
+    fontSize: 20,
+    fontFamily: Fonts.bold,
   },
   countrySelector: {
     flexDirection: 'row',

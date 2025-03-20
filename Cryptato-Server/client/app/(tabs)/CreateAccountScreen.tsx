@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 20,
-    fontFamily: Fonts.medium,
+    fontFamily: Fonts.bold,
     alignItems: 'center'
   },
   countrySelector: {
