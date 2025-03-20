@@ -19,8 +19,11 @@ async function getGraphicData(limit = 20) {
     }
 }
 
+//ETHUSDT: Ethereum , BNBUSDT: Binance Coin, ADAUSDT: Cardano, SOLUSDT: Solana​
+
 async function getData(symbol = 'BTCUSDT') {
     try {
+        
         // Fetch the 24-hour ticker price change statistics
         const response = await client.ticker24hr(symbol);
         

@@ -9,6 +9,6 @@ const dataRouter = express.Router();
 
 dataRouter.get('/graphicdata', httpGetGraphicData);
 
-dataRouter.get('/price', httpGetData);
+dataRouter.post('/price', httpGetData);
 
 module.exports = dataRouter;
