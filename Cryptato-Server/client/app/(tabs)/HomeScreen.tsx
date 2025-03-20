@@ -19,14 +19,26 @@ const cryptoData = [
     crypto: "Ether",
     price: "27,000 MXN",
     variation: "+1.80%",
-    icon: require('../../assets/images/etherium.png'), // reemplaza con ícono correcto
+    icon: require('../../assets/images/etherium.png'), 
   },
   {
     crypto: "Polkadot",
     price: "150 MXN",
     variation: "+0.95%",
-    icon: require('../../assets/images/polkadot.png'), // reemplaza con ícono correcto
+    icon: require('../../assets/images/polkadot.png'), 
   },
+  {
+    crypto: "Atom",
+    price: "9.52 MXN",
+    variation: "+2.20%",
+    icon: require('../../assets/images/atom.png'),
+  },
+  {
+    crypto: "Solana",
+    price: "2,566 MXN",
+    variation: "+1.2%",
+    icon: require('../../assets/images/solana.png'),
+  }
 ];
 
 export default function HomeScreen() {
@@ -41,7 +53,7 @@ export default function HomeScreen() {
       const nextIndex = (currentIndex + 1) % cryptoData.length;
       Animated.timing(translateX, {
         toValue: -nextIndex * width,
-        duration: 700,
+        duration: 720,
         useNativeDriver: true,
       }).start();
       setCurrentIndex(nextIndex);
