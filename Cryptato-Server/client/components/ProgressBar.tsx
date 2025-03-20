@@ -33,7 +33,7 @@ export default function ProgressBar({ progress }: ProgressBarProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: '50%',
+    width: '70%',
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 20,
