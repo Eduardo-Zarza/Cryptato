@@ -19,4 +19,24 @@ async function getGraphicData(limit = 20) {
     }
 }
 
-module.exports = getGraphicData;
+async function getData(symbol = 'BTCUSDT') {
+    try {
+        // Fetch the 24-hour ticker price change statistics
+        const response = await client.ticker24hr(symbol);
+        
+        // Extract relevant data
+        const price = parseFloat(response.data.lastPrice); // Current price
+        const priceChangePercent = parseFloat(response.data.priceChangePercent); // 24h variation
+
+        return {
+            symbol,
+            price,
+            priceChangePercent
+        };
+    } catch (error) {
+        console.error(`Error fetching data for ${symbol}:`, error.message);
+        throw error;
+    }
+}
+
+module.exports = { getGraphicData, getData };

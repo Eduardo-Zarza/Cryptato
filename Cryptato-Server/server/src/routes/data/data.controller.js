@@ -1,4 +1,5 @@
-const getGraphicData = require('../../models/data.model');
+const { getGraphicData, getData } = require('../../models/data.model');
+
 
 
 async function httpGetGraphicData(req, res){
@@ -11,6 +12,18 @@ async function httpGetGraphicData(req, res){
     }
 }
 
+//return day data from crypto
+async function httpGetData(req, res){
+    try {
+        const data = await getData(); // TODO: add coin symbol in arguments to getData
+        return res.status(200).json(data);
+    } catch (error) {
+        console.error('Error fetching graphic data:', error.message);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
 module.exports = {
-    httpGetGraphicData,
+    httpGetGraphicData, httpGetData
 }
