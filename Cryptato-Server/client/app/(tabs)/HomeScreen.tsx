@@ -29,7 +29,7 @@ export default function HomeScreen() {
         onPress={() => router.push('/CreateAccountScreen')}
       />
 
-      <TouchableOpacity onPress={() => router.push('/CreateAccountScreen')}>
+      <TouchableOpacity onPress={() => router.push('/LoginScreen')}>
         <Text style={[styles.loginText, { color: Colors[colorScheme].link }]}>
           ¿Ya tienes una cuenta? Inicia sesión
         </Text>

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch, useColorScheme, ScrollView } from 'react-native';
 import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
+import { useRouter } from 'expo-router';
 
 export default function FinishScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [acceptNewsletter, setAcceptNewsletter] = useState(false);
+  const router = useRouter();
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
@@ -34,7 +36,7 @@ export default function FinishScreen() {
         />
       </View>
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
+      <TouchableOpacity onPress={() => router.push('/LearningScreen')} style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
         <Text style={styles.buttonText}>Finalizar</Text>
       </TouchableOpacity>
     </ScrollView>
