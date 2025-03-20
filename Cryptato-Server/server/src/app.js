@@ -11,11 +11,15 @@ const dataRouter = require('./routes/data/data.router');
 const app = express();
 
 
-app.use(cors()); // Habilitar CORS para evitar bloqueos en el frontend
-app.use(express.json()); // Permitir solicitudes con JSON
+//CORS middleware to handle frontend requests
+app.use(cors({
+    origin:'http://localhost:8081',
+}));
+ 
+app.use(express.json()); // Allow  JSON requests
+
 
 //mounting routes
-
 app.use('/data',dataRouter); 
 
 
