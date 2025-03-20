@@ -26,10 +26,10 @@ export default function HomeScreen() {
 
       <Button
         title="Crear una cuenta"
-        onPress={() => router.push('/CreateAccountScreen')}
+        onPress={() => router.push('./CreateAccountScreen')}
       />
 
-      <TouchableOpacity onPress={() => router.push('/LoginScreen')}>
+      <TouchableOpacity onPress={() => router.push('./LoginScreen')}>
         <Text style={[styles.loginText, { color: Colors[colorScheme].link }]}>
           ¿Ya tienes una cuenta? Inicia sesión
         </Text>
@@ -46,18 +46,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 70,
+    fontSize: 36,
     fontFamily: Fonts.bold,
     marginBottom: 10,
   },
   subtitle: {
-    fontSize: 25,
+    fontSize: 16,
     fontFamily: Fonts.regular,
     textAlign: 'center',
     marginBottom: 30,
   },
   loginText: {
-    fontSize: 16,
     marginTop: 20,
     fontFamily: Fonts.medium,
   },

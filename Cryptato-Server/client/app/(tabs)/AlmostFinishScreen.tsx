@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Switch, useColorScheme, Scrol
 import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function FinishScreen() {
   const colorScheme = useColorScheme() ?? 'light';
@@ -12,6 +13,12 @@ export default function FinishScreen() {
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
+
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={28} color={Colors[colorScheme].primary} />
+      </TouchableOpacity>
+
+
       <Text style={[styles.title, { color: Colors[colorScheme].primary }]}>
         Estamos por acabar...
       </Text>
@@ -36,7 +43,7 @@ export default function FinishScreen() {
         />
       </View>
 
-      <TouchableOpacity onPress={() => router.push('/LearningScreen')} style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
+      <TouchableOpacity onPress={() => router.push('./LearningScreen')} style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
         <Text style={styles.buttonText}>Finalizar</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -77,5 +84,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: Fonts.medium,
+  },
+  backButton: {
+    marginBottom: 10,
   },
 });

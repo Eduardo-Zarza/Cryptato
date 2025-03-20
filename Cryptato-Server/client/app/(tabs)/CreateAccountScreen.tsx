@@ -12,6 +12,10 @@ export default function CreateAccountScreen() {
   
   return (
     <View style={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={28} color={Colors[colorScheme].primary} />
+      </TouchableOpacity>
+      
       <Text style={[styles.title, { color: Colors[colorScheme].primary }]}>Bienvenido</Text>
       
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>¿De qué país eres?</Text>
@@ -107,5 +111,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontFamily: Fonts.regular,
+  },
+  backButton: {
+    marginBottom: 10,
   },
 });

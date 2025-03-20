@@ -6,7 +6,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ headerShown: false }} />
       <Tabs.Screen name="HomeScreen" options={{ headerShown: false }} />
       <Tabs.Screen name="CreateAccountScreen" options={{ headerShown: false }} />
-      <Tabs.Screen name="FinishScreen" options={{ headerShown: false }} />
+      <Tabs.Screen name="AlmostFinishScreen" options={{ headerShown: false }} />
       <Tabs.Screen name="LearningScreen" options={{ headerShown: false }} />
       <Tabs.Screen name="LoginScreen" options={{ headerShown: false }} />
     </Tabs>
