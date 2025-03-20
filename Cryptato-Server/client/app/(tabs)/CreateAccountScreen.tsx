@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 16,
     fontFamily: Fonts.regular,
-    color: '#0D0D0D',
+    color: '#fff',
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: Fonts.regular,
-    color: '#0D0D0D',
+    color: '#fff',
   },
   button: {
     marginTop: 30,
