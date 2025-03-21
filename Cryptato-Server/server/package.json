@@ -13,6 +13,7 @@
   "dependencies": {
     "@binance/connector": "^3.6.1",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "firebase-admin": "^13.2.0"
   }
 }
