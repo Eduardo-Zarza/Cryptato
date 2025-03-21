@@ -5,41 +5,9 @@ import Button from '../../components/Button';
 import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
 import { useRouter } from 'expo-router';
+import useData from '../../hooks/useData'; // Importar el hook que maneja la API
 
 const { width } = Dimensions.get('window');
-
-const cryptoData = [
-  {
-    crypto: "Bitcoin",
-    price: "1,730,000 MXN",
-    variation: "+2.35%",
-    icon: require('../../assets/images/bitcoin.png'),
-  },
-  {
-    crypto: "Ether",
-    price: "27,000 MXN",
-    variation: "+1.80%",
-    icon: require('../../assets/images/etherium.png'), 
-  },
-  {
-    crypto: "Polkadot",
-    price: "150 MXN",
-    variation: "+0.95%",
-    icon: require('../../assets/images/polkadot.png'), 
-  },
-  {
-    crypto: "Atom",
-    price: "9.52 MXN",
-    variation: "+2.20%",
-    icon: require('../../assets/images/atom.png'),
-  },
-  {
-    crypto: "Solana",
-    price: "2,566 MXN",
-    variation: "+1.2%",
-    icon: require('../../assets/images/solana.png'),
-  }
-];
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme() ?? 'light';
@@ -47,6 +15,46 @@ export default function HomeScreen() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
+
+  // Traer los datos de las criptomonedas
+  const { data: bitcoinData, loading: bitcoinLoading, error: bitcoinError } = useData('BTCUSDT');
+  const { data: etherData, loading: etherLoading, error: etherError } = useData('ETHUSDT');
+  const { data: polkadotData, loading: polkadotLoading, error: polkadotError } = useData('DOTUSDT');
+  const { data: atomData, loading: atomLoading, error: atomError } = useData('ATOMUSDT');
+  const { data: solanaData, loading: solanaLoading, error: solanaError } = useData('SOLUSDT');
+
+  const cryptoData = [
+    {
+      crypto: "Bitcoin",
+      price: bitcoinLoading ? "Cargando..." : bitcoinError ? "Error" : bitcoinData?.price ?? "Cargando...",
+      variation: bitcoinLoading ? "Cargando..." : bitcoinError ? "Error" : `${bitcoinData?.priceChangePercent ?? "0"}%`,
+      icon: require('../../assets/images/bitcoin.png'),
+    },
+    {
+      crypto: "Ether",
+      price: etherLoading ? "Cargando..." : etherError ? "Error" : etherData?.price ?? "Cargando...",
+      variation: etherLoading ? "Cargando..." : etherError ? "Error" : `${etherData?.priceChangePercent ?? "0"}%`,
+      icon: require('../../assets/images/etherium.png'),
+    },
+    {
+      crypto: "Polkadot",
+      price: polkadotLoading ? "Cargando..." : polkadotError ? "Error" : polkadotData?.price ?? "Cargando...",
+      variation: polkadotLoading ? "Cargando..." : polkadotError ? "Error" : `${polkadotData?.priceChangePercent ?? "0"}%`,
+      icon: require('../../assets/images/polkadot.png'),
+    },
+    {
+      crypto: "Atom",
+      price: atomLoading ? "Cargando..." : atomError ? "Error" : atomData?.price ?? "Cargando...",
+      variation: atomLoading ? "Cargando..." : atomError ? "Error" : `${atomData?.priceChangePercent ?? "0"}%`,
+      icon: require('../../assets/images/atom.png'),
+    },
+    {
+      crypto: "Solana",
+      price: solanaLoading ? "Cargando..." : solanaError ? "Error" : solanaData?.price ?? "Cargando...",
+      variation: solanaLoading ? "Cargando..." : solanaError ? "Error" : `${solanaData?.priceChangePercent ?? "0"}%`,
+      icon: require('../../assets/images/solana.png'),
+    }
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,7 +65,7 @@ export default function HomeScreen() {
         useNativeDriver: true,
       }).start();
       setCurrentIndex(nextIndex);
-    }, 3000); // cada 3 segundos
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
@@ -76,7 +84,7 @@ export default function HomeScreen() {
               <CryptoCard
                 crypto={item.crypto}
                 price={item.price}
-                variation={item.variation}
+                variation={item.variation ?? "Cargando..."}
                 icon={item.icon}
               />
             </View>
