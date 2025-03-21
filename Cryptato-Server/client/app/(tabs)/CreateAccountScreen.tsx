@@ -4,11 +4,18 @@ import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { registerUser } from '../../hooks/useFirebaseAuth'; //firebase
 
 export default function CreateAccountScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const [hidePassword, setHidePassword] = useState(true);
   const router = useRouter();
+
+  //firebase
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false); // loading
+  const [error, setError] = useState<string | null>(null);
   
   return (
     <View style={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
@@ -25,23 +32,51 @@ export default function CreateAccountScreen() {
       </TouchableOpacity>
 
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Correo electrónico</Text>
-      <TextInput placeholder="" style={[styles.input, { backgroundColor: Colors[colorScheme].cardBackground }]} placeholderTextColor="#888" />
+      <TextInput 
+        placeholder="Correo electrónico"
+        style={[styles.input, { backgroundColor: Colors[colorScheme].cardBackground }]}
+        placeholderTextColor="#888"
+        value={email}
+        onChangeText={setEmail}
+      />
 
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Contraseña</Text>
+      
       <View style={[styles.passwordContainer, { backgroundColor: Colors[colorScheme].cardBackground }]}>
         <TextInput
           secureTextEntry={hidePassword}
-          placeholder=""
+          placeholder="Contraseña"
           placeholderTextColor="#888"
           style={styles.passwordInput}
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
           <Ionicons name={hidePassword ? "eye" : "eye-off"} size={20} color={Colors[colorScheme].primary} />
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}  onPress={() => router.push('/AlmostFinishScreen')}>
-        <Text style={styles.buttonText}>Continuar</Text>
+      <TouchableOpacity 
+      style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}
+      onPress={async () => {
+        setLoading(true); // Activar indicador de carga
+        setError(null); // Limpiar errores anteriores
+    
+        const result = await registerUser(email, password);
+    
+        if (result.success) {
+          console.log('Usuario registrado:', result.user);
+          router.push('/AlmostFinishScreen'); // Redirigir si fue exitoso
+        } else {
+          setError(result.error ?? "Ocurrió un error desconocido"); // ✅ Siempre será string
+
+        }
+    
+        setLoading(false); // Desactivar indicador de carga
+      }}
+      disabled={loading} // Deshabilita el botón mientras carga
+    >
+      <Text style={styles.buttonText}>{loading ? "Creando cuenta..." : "Continuar"}</Text>
         
       </TouchableOpacity>
     </View>

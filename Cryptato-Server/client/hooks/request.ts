@@ -1,4 +1,6 @@
-const apiUrl = 'http://localhost:8000';
+import { API_URL } from '@env';
+
+const apiUrl = API_URL; // change to your COMPUTER'S IP
 
 const obtenerUsuario = async (symbol: string) => {
     try {
@@ -28,7 +30,7 @@ const obtenerUsuario = async (symbol: string) => {
         throw new Error('La respuesta no tiene el formato esperado');
       }
     } catch (error) {
-      console.error('Error al obtener usuario:', error);
+      console.error('Error al obtener datos de moneda:', error);
       throw error; 
     }
   };

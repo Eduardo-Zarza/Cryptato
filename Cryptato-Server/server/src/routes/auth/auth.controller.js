@@ -1,33 +1,24 @@
-const {authenticate,newUser} = require('../../models/auth.model');
+const {authenticate} = require('../../models/auth.model');
 
 
 
-async function httpAuthenticate(req, res){
+async function httpAuthenticate(req, res) {
     try {
-        
-    } catch (error) {
-       
-    }
-}
+        const { idToken } = req.body;
 
-
-async function httpNewUser(req, res) {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required' });
+        if (!idToken) {
+            return res.status(400).json({ error: 'Token is required' });
         }
 
-        const user = await newUser(email, password);
-        return res.status(201).json(user);
+        const user = await authenticate(idToken);
+        return res.status(200).json(user);
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(401).json({ error: error.message });
     }
 }
 
 
 
 module.exports = {
-    httpAuthenticate,httpNewUser
+    httpAuthenticate
 }

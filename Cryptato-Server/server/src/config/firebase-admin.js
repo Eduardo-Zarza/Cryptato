@@ -5,7 +5,7 @@ const path = require('path');
 // IMPORTANT: ADD YOUR LOCATION TO THE FIREBASE KEY IN THE PC, it is not in repository
 const serviceAccountPath = path.join('C:', 'Users', 'erick', 'Documents', 'keys', 'serviceAccountKey.json'); 
 
-// Inicializar Firebase con la clave
+// Initialiace Firebase with key
 const serviceAccount = require(serviceAccountPath);
 
 admin.initializeApp({
