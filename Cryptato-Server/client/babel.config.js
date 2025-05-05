@@ -3,7 +3,7 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      // Otros plugins que estés utilizando
+      ['module:react-native-dotenv'],
     ],
   };
 };
