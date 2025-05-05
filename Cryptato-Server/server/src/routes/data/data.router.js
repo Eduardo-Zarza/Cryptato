@@ -7,7 +7,7 @@ const {
 
 const dataRouter = express.Router();
 
-dataRouter.get('/graphicdata', httpGetGraphicData);
+dataRouter.post('/graphicdata', httpGetGraphicData);
 
 dataRouter.post('/price', httpGetData);
 

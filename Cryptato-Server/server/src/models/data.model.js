@@ -1,10 +1,10 @@
 const { Spot } = require('@binance/connector');
 const client = new Spot();
 
-async function getGraphicData(limit = 20) {
+async function getGraphicData(limit = 20, symbol = 'BTCUSDT') {
     try {
-        const symbol = 'BTCUSDT';
-        const interval = '1m';
+        
+        const interval = '1m'; //could add it as a parameter
         const validLimit = Number(limit); // Ensure limit is a number
 
         if (isNaN(validLimit) || validLimit < 1 || validLimit > 1000) {
