@@ -1,24 +1,35 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet, useColorScheme } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native';
 import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
 import ProgressBar from '../../components/ProgressBar';
 import { Ionicons } from '@expo/vector-icons';
 import BottomToolbar from '@/components/BottomToolBar';
+import { useRouter } from 'expo-router';
 
 export default function LearningScreen() {
   const colorScheme = useColorScheme() ?? 'light';
+  const router = useRouter();
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
+      <ScrollView
+        style={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
+        
         {/* Header Icons */}
         <View style={styles.header}>
           <Ionicons name="settings-outline" size={24} color={Colors[colorScheme].primary} />
           <Ionicons name="person-circle-outline" size={24} color={Colors[colorScheme].primary} />
         </View>
 
-        {/* Sección Principal */}
+        {/* Título Principal */}
         <Text style={[styles.title, { color: Colors[colorScheme].primary }]}>
           Comienza con el aprendizaje
         </Text>
@@ -33,14 +44,18 @@ export default function LearningScreen() {
         <Text style={[styles.sectionTitle, { color: Colors[colorScheme].text }]}>Blockchain & MetaMask</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cardContainer}>
-          <View style={[styles.card, { backgroundColor: '#FFA800' }]}>
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/CourseScreen?id=intro')}
+            style={[styles.card, { backgroundColor: '#FFA800' }]}>
             <Ionicons name="book-outline" size={40} color="#fff" />
             <Text style={styles.cardText}>Introducción</Text>
-          </View>
+          </TouchableOpacity>
+
           <View style={[styles.card, { backgroundColor: '#333' }]}>
             <Ionicons name="lock-closed-outline" size={40} color="#aaa" />
             <Text style={styles.cardText}>Aplicación en {'\n'}criptos</Text>
           </View>
+
           <View style={[styles.card, { backgroundColor: '#333' }]}>
             <Ionicons name="lock-closed-outline" size={40} color="#aaa" />
             <Text style={styles.cardText}>Entornos seguros</Text>
@@ -54,10 +69,14 @@ export default function LearningScreen() {
         </Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cardContainerMaxSize}>
-          <View style={[styles.cardMaxSize, { backgroundColor: '#FF4A60' }]}>
-            <Ionicons name="wallet-outline" size={80} color="#fff" />
-            <Text style={styles.cardTextMaxSize}>Seguridad</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/CourseScreen?id=seguridad')}
+          style={[styles.cardMaxSize, { backgroundColor: '#FF4A60' }]}>
+          <Ionicons name="wallet-outline" size={80} color="#fff" />
+          <Text style={styles.cardTextMaxSize}>Seguridad</Text>
+        </TouchableOpacity>
+
+
           <View style={[styles.cardMaxSize, { backgroundColor: '#333' }]}>
             <Ionicons name="lock-closed-outline" size={80} color="#aaa" />
             <Text style={styles.cardTextMaxSize}>Wallets</Text>
@@ -65,16 +84,21 @@ export default function LearningScreen() {
         </ScrollView>
 
         {/* Sección Defi */}
-        <Text style={[styles.sectionTitle, { color: Colors[colorScheme].text }]}>Defi (Finanzas desentralizadas)</Text>
+        <Text style={[styles.sectionTitle, { color: Colors[colorScheme].text }]}>
+          Defi (Finanzas desentralizadas)
+        </Text>
         <Text style={[styles.sectionSubtitle, { color: Colors[colorScheme].secondary }]}>
           Descubre Staking, Lending y Yield Farming
         </Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cardContainer}>
-          <View style={[styles.card, { backgroundColor: '#FF4C4C' }]}>
-            <Ionicons name="bar-chart-outline" size={40} color="#fff" />
-            <Text style={styles.cardText}>¿Qué es Defi?</Text>
-          </View>
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/CourseScreen?id=defi')}
+          style={[styles.card, { backgroundColor: '#FF4C4C' }]}>
+          <Ionicons name="bar-chart-outline" size={40} color="#fff" />
+          <Text style={styles.cardText}>¿Qué es Defi?</Text>
+        </TouchableOpacity>
+
           <View style={[styles.card, { backgroundColor: '#333' }]}>
             <Ionicons name="lock-closed-outline" size={40} color="#aaa" />
             <Text style={styles.cardText}>Staking</Text>
@@ -96,14 +120,13 @@ export default function LearningScreen() {
         <View style={{ height: 80 }} />
       </ScrollView>
 
-      {/* Bottom Toolbar integrada */}
+      {/* Bottom Toolbar */}
       <BottomToolbar
-      activeTab="Home"
-      onTabPress={(tabName) => {
-      console.log('Tab pressed:', tabName);
-    // Modificar navegación
-  }}
-/>
+        activeTab="Home"
+        onTabPress={(tabName) => {
+          console.log('Tab pressed:', tabName);
+        }}
+      />
     </View>
   );
 }

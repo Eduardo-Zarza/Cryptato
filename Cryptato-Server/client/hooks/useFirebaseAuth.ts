@@ -9,6 +9,11 @@ interface RegisterUserResponse {
   error?: string;
 }
 
+interface LoginUserResponse {
+  success: boolean;
+  user?: User;
+  error?: string;
+}
 /**
  * Registra un nuevo usuario en Firebase Authentication.
  * @param email Correo electrónico.
