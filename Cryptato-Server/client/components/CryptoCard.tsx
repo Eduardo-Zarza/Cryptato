@@ -13,12 +13,19 @@ interface CryptoCardProps {
 export default function CryptoCard({ crypto, price, variation, icon }: CryptoCardProps) {
   const colorScheme = useColorScheme() ?? 'light';
 
+  // Detect if variation is negative
+  const isNegative = variation.trim().startsWith('-');
+
+  const variationColor = isNegative
+    ? '#FF4A60' // red
+    : Colors[colorScheme].success; // green
+
   return (
     <View style={[styles.card, { backgroundColor: Colors[colorScheme].cardBackground }]}>
       <Image source={icon} style={styles.icon} />
       <View style={styles.info}>
         <Text style={[styles.crypto, { color: Colors[colorScheme].text }]}>{crypto}</Text>
-        <Text style={styles.variation}>{variation}</Text>
+        <Text style={[styles.variation, { color: variationColor }]}>{variation}</Text>
         <Text style={[styles.price, { color: Colors[colorScheme].text }]}>{price}</Text>
       </View>
     </View>
@@ -32,9 +39,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 20,
-    maxWidth: 320, 
+    maxWidth: 320,
     alignSelf: 'center',
-    marginBottom: 20
+    marginBottom: 20,
   },
   icon: {
     width: 89,
@@ -44,16 +51,15 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   crypto: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    marginBottom: 10
+    marginBottom: 10,
   },
   variation: {
     fontSize: 16,
-    color: Colors.light.success,
     fontFamily: Fonts.medium,
   },
   price: {
