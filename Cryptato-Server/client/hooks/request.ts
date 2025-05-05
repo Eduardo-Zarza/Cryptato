@@ -1,8 +1,7 @@
-
-
-const apiUrl = process.env.API_URL
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 const obtenerUsuario = async (symbol: string) => {
+    console.log('API URL:', process.env.EXPO_PUBLIC_API_URL);
   try {
     const response = await fetch(`${apiUrl}/data/price`, {
       method: 'POST',
