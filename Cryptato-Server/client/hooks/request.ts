@@ -1,6 +1,6 @@
-import { API_URL } from '@env';
 
-const apiUrl = API_URL; // Must be defined in .env and properly loaded via babel
+
+const apiUrl = process.env.API_URL
 
 const obtenerUsuario = async (symbol: string) => {
   try {
