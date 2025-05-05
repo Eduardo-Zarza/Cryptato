@@ -36,7 +36,10 @@ export default function LearningScreen() {
 
         <ProgressBar progress={25} />
 
-        <TouchableOpacity style={[styles.startButton, { backgroundColor: Colors[colorScheme].primary }]}>
+        <TouchableOpacity
+          onPress={() => router.push('/(tabs)/SimulationScreen')}
+          style={[styles.startButton, { backgroundColor: Colors[colorScheme].primary }]}
+          >
           <Text style={styles.startButtonText}>Empieza ▶</Text>
         </TouchableOpacity>
 
