@@ -32,9 +32,6 @@ export async function registerUser(email: string, password: string): Promise<Reg
     await setDoc(doc(db, 'users', user.uid), {
       email: email,
       cursos: {
-        curso1: 0,
-        curso2: 0,
-        curso3: 0,
       },
       monedas: [],
     });

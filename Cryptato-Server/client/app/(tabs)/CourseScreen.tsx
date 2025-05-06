@@ -4,6 +4,13 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { courses } from '@/constants/Courses';
 import { Colors } from '@/constants/Colors';
 import { Fonts } from '@/constants/Fonts';
+import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../../config/firebase'; // ajusta la ruta si es diferente
+
+
+
+
+
 
 export default function CourseScreen() {
   const router = useRouter();
@@ -14,9 +21,33 @@ export default function CourseScreen() {
 
   if (!course) return <Text style={{ color: '#fff', padding: 20 }}>Curso no encontrado</Text>;
 
-  const handleNext = () => {
-    if (page < course.pages.length - 1) setPage(prev => prev + 1);
+  const guardarProgreso = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+  
+    const porcentaje = Math.round(((page + 1) / course.pages.length) * 100);
+  
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        [`cursos.${course.id}`]: porcentaje, // ✅ actualiza solo el curso correspondiente
+      });
+      console.log(`Progreso guardado: ${porcentaje}% en ${course.id}`);
+    } catch (err) {
+      console.error('Error al guardar progreso:', err);
+    }
   };
+
+  const handleNext = () => {
+    if (page < course.pages.length - 1) {
+      setPage(prev => {
+        const newPage = prev + 1;
+        guardarProgreso(); // guarda después de avanzar
+        return newPage;
+      });
+    }
+  };
+  
 
   const handleBack = () => {
     if (page > 0) setPage(prev => prev - 1);
@@ -50,9 +81,13 @@ export default function CourseScreen() {
             <Text style={styles.buttonText}>Siguiente</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => router.replace('/LearningScreen')} style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
+          <TouchableOpacity onPress={() => {
+            guardarProgreso(); // asegura progreso final al salir
+            router.replace('/LearningScreen');
+          }} style={[styles.button, { backgroundColor: Colors[colorScheme].primary }]}>
             <Text style={styles.buttonText}>Finalizar</Text>
           </TouchableOpacity>
+          
         )}
       </View>
     </View>
