@@ -1,6 +1,8 @@
 import { auth } from '../config/firebase'; 
 import { createUserWithEmailAndPassword, User } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../config/firebase'; 
 
 // Definir tipo de respuesta
 interface RegisterUserResponse {
@@ -23,7 +25,22 @@ interface LoginUserResponse {
 export async function registerUser(email: string, password: string): Promise<RegisterUserResponse> {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    return { success: true, user: userCredential.user };
+    const user = userCredential.user;
+
+
+    // Crear documento del usuario en Firestore
+    await setDoc(doc(db, 'users', user.uid), {
+      email: email,
+      cursos: {
+        curso1: 0,
+        curso2: 0,
+        curso3: 0,
+      },
+      monedas: [],
+    });
+
+
+    return { success: true, user };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

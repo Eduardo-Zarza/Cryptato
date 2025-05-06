@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { registerUser } from '../../hooks/useFirebaseAuth'; //firebase
 
+
 export default function CreateAccountScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const [hidePassword, setHidePassword] = useState(true);
