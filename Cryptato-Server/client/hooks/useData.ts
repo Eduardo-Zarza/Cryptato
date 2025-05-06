@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import obtenerUsuario from '../hooks/request'; 
+import {obtenerUsuario} from '../hooks/request'; 
 
 interface SymbolData {
   symbol: string;

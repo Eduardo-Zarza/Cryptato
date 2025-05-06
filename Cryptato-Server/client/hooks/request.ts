@@ -65,4 +65,4 @@ const obtenerDatosGraficos = async (symbol: string, limit: number) => {
 };
 
 
-exports={obtenerUsuario, obtenerDatosGraficos} ;
+export { obtenerUsuario, obtenerDatosGraficos };
