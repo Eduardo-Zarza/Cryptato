@@ -31,23 +31,39 @@ export default function SimulationScreen() {
   const [chartData, setChartData] = useState([0, 0, 0, 0, 0]);
   const [chartLabels, setChartLabels] = useState(['', '', '', '', '']);
 
-  const rangeToLimit = {
-    '1H': 10,
-    '1D': 50,
-    '1W': 100,
-    '1M': 200,
-    '1Y': 365,
+ 
+
+  const rangeToInterval: Record<string, string> = {
+    '1H': '5m',
+    '1D': '2h',
+    '1W': '1d',
+    '1M': '1w',
+    '1Y': '1M',
   };
 
   useEffect(() => {
     const fetchGraphicData = async () => {
       try {
-        const rawData = await obtenerDatosGraficos(`${crypto}USDT`, rangeToLimit[selectedRange]);
-
+        const rawData = await obtenerDatosGraficos(`${crypto}USDT`, 8, rangeToInterval[selectedRange]);
         const values = rawData.map(point => parseFloat(point[4]));
-        const labels = rawData.map(point =>
-          new Date(point[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        );
+        const labels = rawData.map(point => {
+          const date = new Date(point[0]);
+          switch (selectedRange) {
+            case '1H':
+              return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // ej. "14:30"
+            case '1D':
+              return date.toLocaleTimeString([], { hour: '2-digit' }); // ej. "14"
+            case '1W':
+              return date.toLocaleDateString([], { weekday: 'short' }); // ej. "Mon"
+            case '1M':
+              return date.toLocaleDateString([], { day: '2-digit', month: '2-digit' }); // ej. "04/05"
+            case '1Y':
+              return date.toLocaleDateString([], { month: 'short' }); // ej. "May"
+            default:
+              return '';
+          }
+        });
+        
 
         setChartData(values);
         setChartLabels(labels);

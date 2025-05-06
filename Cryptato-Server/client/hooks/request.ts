@@ -34,15 +34,14 @@ const obtenerUsuario = async (symbol: string) => {
   }
 };
 
-const obtenerDatosGraficos = async (symbol: string, limit: number) => {
-  
+const obtenerDatosGraficos = async (symbol: string, limit: number, interval: string = '1m') => {
   try {
     const response = await fetch(`${apiUrl}/data/graphicdata`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ symbol, limit }),
+      body: JSON.stringify({ symbol, limit, interval }),  // 👈 aquí se envía
     });
 
     if (!response.ok) {
@@ -52,9 +51,8 @@ const obtenerDatosGraficos = async (symbol: string, limit: number) => {
     const graphicData = await response.json();
     console.log('Datos de gráfica recibidos:', graphicData);
 
-    // Verifica que sea un array de arrays con al menos un dato
     if (Array.isArray(graphicData) && graphicData.length > 0 && Array.isArray(graphicData[0])) {
-      return graphicData; // Devuelve los datos crudos para graficar
+      return graphicData;
     } else {
       throw new Error('La respuesta no tiene el formato esperado');
     }
@@ -63,6 +61,7 @@ const obtenerDatosGraficos = async (symbol: string, limit: number) => {
     throw error;
   }
 };
+
 
 
 export { obtenerUsuario, obtenerDatosGraficos };
