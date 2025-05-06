@@ -149,7 +149,7 @@ export default function SimulationScreen() {
             </View>
           </View>
 
-          <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Elige la moneda</Text>
+          <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Precio</Text>
           <View style={styles.row}>
           <TextInput
   editable={false}
