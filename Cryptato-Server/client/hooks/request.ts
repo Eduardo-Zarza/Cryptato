@@ -62,6 +62,33 @@ const obtenerDatosGraficos = async (symbol: string, limit: number, interval: str
   }
 };
 
+const convertirCriptoADivisa = async (
+  symbol: string,
+  amount: number,
+  currency: string
+) => {
+  try {
+    const response = await fetch(`${apiUrl}/data/price_convertion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ symbol, amount, currency }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const { result } = await response.json();
+    console.log(`Conversión recibida: ${amount} ${symbol} = ${result} ${currency}`);
+    return result;
+  } catch (error) {
+    console.error('Error al convertir cripto a divisa:', error);
+    throw error;
+  }
+};
 
 
-export { obtenerUsuario, obtenerDatosGraficos };
+
+export { obtenerUsuario, obtenerDatosGraficos, convertirCriptoADivisa };

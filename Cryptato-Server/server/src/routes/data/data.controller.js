@@ -1,4 +1,4 @@
-const { getGraphicData, getData } = require('../../models/data.model');
+const { getGraphicData, getData,getPrice } = require('../../models/data.model');
 
 
 
@@ -27,7 +27,24 @@ async function httpGetData(req, res){
     }
 }
 
+async function httpGetPrice(req, res) {
+    const { symbol = 'BTC', amount = 1, currency = 'USD' } = req.body;
+  
+    if (!symbol || !currency || isNaN(amount)) {
+      return res.status(400).json({ error: 'Parámetros inválidos. Se requiere: symbol, amount (número), currency.' });
+    }
+  
+    try {
+      const result = await getPrice(symbol, parseFloat(amount), currency); // ✅ Aquí está la corrección
+      return res.status(200).json({ result });
+    } catch (error) {
+      console.error('Error fetching price conversion:', error.message);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+  
+
 
 module.exports = {
-    httpGetGraphicData, httpGetData
+    httpGetGraphicData, httpGetData, httpGetPrice
 }

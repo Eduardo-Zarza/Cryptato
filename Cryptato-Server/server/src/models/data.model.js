@@ -1,5 +1,6 @@
 const { Spot } = require('@binance/connector');
 const client = new Spot();
+const axios = require('axios');
 
 async function getGraphicData(limit = 20, symbol = 'BTCUSDT', interval = '1m') {
     try {
@@ -40,4 +41,38 @@ async function getData(symbol = 'BTCUSDT') {
     }
 }
 
-module.exports = { getGraphicData, getData };
+
+
+async function getPrice(symbol = 'BTC', amount = 1, currency = 'USD') {
+  try {
+    // Paso 1: Obtener el precio de la cripto en USD desde Binance
+    const pair = `${symbol}USDT`; // Asumimos que USDT ≈ USD
+    const response = await client.tickerPrice(pair);
+    const priceInUSD = parseFloat(response.data.price) * amount;
+
+    // Paso 2: Si la divisa es USD, devolver directamente
+    if (currency === 'USD') {
+      return priceInUSD;
+    }
+
+    // Paso 3: Si no, convertir el precio USD a otra divisa con Frankfurter
+    const fxResponse = await axios.get(`https://api.frankfurter.app/latest`, {
+      params: {
+        amount: priceInUSD,
+        from: 'USD',
+        to: currency,
+      },
+    });
+
+    return fxResponse.data.rates[currency];
+  } catch (error) {
+    console.error('Error in getPrice:', error.message);
+    throw new Error('Failed to get price in requested currency');
+  }
+}
+
+
+
+
+
+module.exports = { getGraphicData, getData, getPrice };

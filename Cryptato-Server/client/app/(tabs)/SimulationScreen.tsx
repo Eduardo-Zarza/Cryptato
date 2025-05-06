@@ -15,7 +15,7 @@ import { Fonts } from '../../constants/Fonts';
 import { Ionicons } from '@expo/vector-icons';
 import BottomToolbar from '@/components/BottomToolBar';
 import { useRouter } from 'expo-router';
-import { obtenerDatosGraficos } from '../../hooks/request';
+import { obtenerDatosGraficos, convertirCriptoADivisa } from '../../hooks/request';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -30,6 +30,10 @@ export default function SimulationScreen() {
   const [selectedRange, setSelectedRange] = useState('1D');
   const [chartData, setChartData] = useState([0, 0, 0, 0, 0]);
   const [chartLabels, setChartLabels] = useState(['', '', '', '', '']);
+  const [currency, setCurrency] = useState('MXN');
+  const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
+  const currencies = ['MXN', 'USD', 'EUR'];
+
 
  
 
@@ -99,13 +103,24 @@ export default function SimulationScreen() {
           <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Elige la cripto a comprar</Text>
           <View style={styles.row}>
             <TextInput
-              placeholder="0"
-              placeholderTextColor="#999"
-              keyboardType="numeric"
-              inputMode="decimal"
-              style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
-              value={amount}
-              onChangeText={setAmount}
+               placeholder="0"
+               placeholderTextColor="#999"
+               keyboardType="numeric"
+               inputMode="decimal"
+               style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
+               value={amount}
+               onChangeText={async (text) => {
+                 setAmount(text);
+                 const numericAmount = parseFloat(text);
+                 if (!isNaN(numericAmount) && numericAmount > 0) {
+                   const price = await convertirCriptoADivisa(crypto, numericAmount, currency);
+                   if (price !== null) {
+                     setPriceTotal(price.toFixed(2));
+                   }
+                 } else {
+                   setPriceTotal('');
+                 }
+               }}
             />
             <View style={{ position: 'relative' }}>
               <TouchableOpacity
@@ -136,27 +151,66 @@ export default function SimulationScreen() {
 
           <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Elige la moneda</Text>
           <View style={styles.row}>
-            <TextInput
-              placeholder="0"
-              placeholderTextColor="#999"
-              keyboardType="numeric"
-              inputMode="decimal"
-              style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
-              value={priceTotal}
-              onChangeText={setPriceTotal}
-            />
-            <TouchableOpacity style={styles.selector}>
-              <Text style={styles.selectorText}>$MXN</Text>
-              <Ionicons name="chevron-down" size={16} color="#fff" />
-            </TouchableOpacity>
+          <TextInput
+  editable={false}
+  style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
+  value={priceTotal}
+/>
+
+            <View style={{ position: 'relative' }}>
+  <TouchableOpacity
+    style={[styles.selector, styles.fixedSelector]}
+    onPress={() => setShowCurrencyPicker(prev => !prev)}
+  >
+    <Text style={styles.selectorText}>${currency}</Text>
+    <Ionicons name="chevron-down" size={16} color="#fff" />
+  </TouchableOpacity>
+  {showCurrencyPicker && (
+    <View style={styles.dropdownOverlay}>
+      {currencies.map(item => (
+        <TouchableOpacity
+          key={item}
+          style={styles.dropdownItem}
+          onPress={async () => {
+            setCurrency(item);
+            setShowCurrencyPicker(false);
+            const numericAmount = parseFloat(amount);
+            if (!isNaN(numericAmount) && numericAmount > 0) {
+              const price = await convertirCriptoADivisa(crypto, numericAmount, item);
+              if (price !== null) {
+                setPriceTotal(price.toFixed(2));
+              }
+            }
+          }}
+        >
+          <Text style={styles.dropdownItemText}>{item}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+  )}
+</View>
+
           </View>
 
-          <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Precio total</Text>
-          <TextInput
-            style={[styles.inputFull, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground, borderColor: Colors[colorScheme].primary }]}
-            editable={false}
-            value=""
-          />
+          <View style={{ alignItems: 'center', marginTop: 10 }}>
+  <TouchableOpacity
+    style={{
+      backgroundColor: Colors[colorScheme].primary,
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 12,
+    }}
+    onPress={() => {
+      // Aquí va la lógica para agregar a una lista, carrito, etc.
+      console.log(`Agregado: ${amount} ${crypto} ≈ ${priceTotal} ${currency}`);
+    }}
+  >
+    <Text style={{ color: 'white', fontFamily: Fonts.bold, fontSize: 16 }}>Agregar</Text>
+  </TouchableOpacity>
+</View>
+
+
+          
 
           <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Selecciona el período</Text>
           <View style={styles.rangeButtonGroup}>
