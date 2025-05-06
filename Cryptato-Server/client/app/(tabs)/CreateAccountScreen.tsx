@@ -33,9 +33,15 @@ export default function CreateAccountScreen() {
       </TouchableOpacity>
 
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Correo electrónico</Text>
-      <TextInput 
+      <TextInput
         placeholder="Correo electrónico"
-        style={[styles.input, { backgroundColor: Colors[colorScheme].cardBackground }]}
+        style={[
+          styles.input,
+          {
+            backgroundColor: Colors[colorScheme].cardBackground,
+            color: Colors[colorScheme].text,
+          },
+        ]}
         placeholderTextColor="#888"
         value={email}
         onChangeText={setEmail}
@@ -44,11 +50,16 @@ export default function CreateAccountScreen() {
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Contraseña</Text>
       
       <View style={[styles.passwordContainer, { backgroundColor: Colors[colorScheme].cardBackground }]}>
-        <TextInput
+      <TextInput
           secureTextEntry={hidePassword}
           placeholder="Contraseña"
           placeholderTextColor="#888"
-          style={styles.passwordInput}
+          style={[
+            styles.passwordInput,
+            {
+              color: Colors[colorScheme].text, 
+            },
+          ]}
           value={password}
           onChangeText={setPassword}
         />
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     fontSize: 16,
     fontFamily: Fonts.regular,
-    color: '#fff',
+    color: '#0d0d0d',
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -122,7 +133,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: Fonts.regular,
-    color: '#fff',
+    color: '#0d0d0d',
   },
   button: {
     marginTop: 30,

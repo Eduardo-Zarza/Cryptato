@@ -30,21 +30,32 @@ export default function CreateAccountScreen() {
       <Text style={[styles.title, { color: Colors[colorScheme].primary }]}>Bienvenido!</Text>
 
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Correo electrónico</Text>
-      <TextInput 
-        placeholder="Correo electrónico"
-        style={[styles.input, { backgroundColor: Colors[colorScheme].cardBackground }]}
-        placeholderTextColor="#888"
-        value={email}
-        onChangeText={setEmail}
-       />
-
+            <TextInput
+              placeholder="Correo electrónico"
+              style={[
+                styles.input,
+                {
+                  backgroundColor: Colors[colorScheme].cardBackground,
+                  color: Colors[colorScheme].text,
+                },
+              ]}
+              placeholderTextColor="#888"
+              value={email}
+              onChangeText={setEmail}
+      />
+      
       <Text style={[styles.label, { color: Colors[colorScheme].secondary }]}>Contraseña</Text>
       <View style={[styles.passwordContainer, { backgroundColor: Colors[colorScheme].cardBackground }]}>
-        <TextInput
+      <TextInput
           secureTextEntry={hidePassword}
           placeholder="Contraseña"
           placeholderTextColor="#888"
-          style={styles.passwordInput}
+          style={[
+            styles.passwordInput,
+            {
+              color: Colors[colorScheme].text, 
+            },
+          ]}
           value={password}
           onChangeText={setPassword}
         />
