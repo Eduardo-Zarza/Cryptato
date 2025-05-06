@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
+import { useRouter } from 'expo-router';
 
 interface Props {
   activeTab: string;
@@ -10,38 +11,47 @@ interface Props {
 
 export default function BottomToolbar({ activeTab, onTabPress }: Props) {
   const colorScheme = useColorScheme() ?? 'light';
-
+  const router = useRouter();
+  
   return (
     <View style={[styles.toolbar, { backgroundColor: Colors[colorScheme].background }]}>
-      <TouchableOpacity style={styles.toolbarButton} onPress={() => onTabPress('Home')}>
+      <TouchableOpacity style={styles.toolbarButton} onPress={() => router.replace('/LearningScreen')}>
         <Ionicons
           name="home-outline"
           size={40}
           color={activeTab === 'Home' ? Colors[colorScheme].primary : Colors[colorScheme].text}
         />
         <Text style={[styles.toolbarText, { color: activeTab === 'Home' ? Colors[colorScheme].primary : Colors[colorScheme].text }]}>
+          Home
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.toolbarButton} onPress={() => onTabPress('Learning')}>
+      <TouchableOpacity style={styles.toolbarButton} onPress={() => router.replace('/(tabs)/SimulationScreen')}>
         <Ionicons
           name="book-outline"
           size={40}
           color={activeTab === 'Learning' ? Colors[colorScheme].primary : Colors[colorScheme].text}
         />
         <Text style={[styles.toolbarText, { color: activeTab === 'Learning' ? Colors[colorScheme].primary : Colors[colorScheme].text }]}>
-
+          Learn
         </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.toolbarButton} onPress={() => onTabPress('Profile')}>
+        <TouchableOpacity
+        style={styles.toolbarButton}
+        onPress={() => router.replace('/ProfileScreen')} // <-- aquí va la navegación
+      >
         <Ionicons
           name="person-outline"
           size={40}
           color={activeTab === 'Profile' ? Colors[colorScheme].primary : Colors[colorScheme].text}
         />
-        <Text style={[styles.toolbarText, { color: activeTab === 'Profile' ? Colors[colorScheme].primary : Colors[colorScheme].text }]}>
-
+        <Text
+          style={[
+            styles.toolbarText,
+            { color: activeTab === 'Profile' ? Colors[colorScheme].primary : Colors[colorScheme].text },
+          ]}
+        >
+          Perfil
         </Text>
       </TouchableOpacity>
     </View>
