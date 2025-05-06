@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { LineChart } from 'react-native-chart-kit';
 import { Colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/Fonts';
 import { Ionicons } from '@expo/vector-icons';
 import BottomToolbar from '@/components/BottomToolBar';
 import { useRouter } from 'expo-router';
+import { obtenerDatosGraficos } from '../../hooks/request';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -23,76 +23,43 @@ export default function SimulationScreen() {
   const colorScheme = useColorScheme() ?? 'light';
   const router = useRouter();
 
-  const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('MXN');
   const [crypto, setCrypto] = useState('BTC');
-  const [priceTotal, setPriceTotal] = useState('0');
   const [showCryptoPicker, setShowCryptoPicker] = useState(false);
+  const [amount, setAmount] = useState('');
+  const [priceTotal, setPriceTotal] = useState('');
   const [selectedRange, setSelectedRange] = useState('1D');
+  const [chartData, setChartData] = useState([0, 0, 0, 0, 0]);
+  const [chartLabels, setChartLabels] = useState(['', '', '', '', '']);
 
-  const cryptoOptions = ['BTC', 'ETH', 'DOT', 'ATOM', 'SOL'];
-
-  const mockPrice = 250000;
-
-  const calculateTotal = (value: string) => {
-    const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
-      setPriceTotal((numericValue * mockPrice).toFixed(2));
-    } else {
-      setPriceTotal('0');
-    }
+  const rangeToLimit = {
+    '1H': 10,
+    '1D': 50,
+    '1W': 100,
+    '1M': 200,
+    '1Y': 365,
   };
 
-  const handleAmountChange = (value: string) => {
-    setAmount(value);
-    calculateTotal(value);
-  };
-
-  const handleCurrencyChange = (value: string) => {
-    setPriceTotal(value);
-    const numericValue = parseFloat(value);
-    if (!isNaN(numericValue)) {
-      setAmount((numericValue / mockPrice).toFixed(6));
-    } else {
-      setAmount('0');
-    }
-  };
-
-  // Chart data state
-  const [chartData, setChartData] = useState<number[]>([]);
-  const [chartLabels, setChartLabels] = useState<string[]>([]);
-
-  // Fetch chart data based on selectedRange and crypto
   useEffect(() => {
-    const fetchChartData = async () => {
+    const fetchGraphicData = async () => {
       try {
-        const response = await fetch(
-          `http://192.168.101.110:8081/api/historical?symbol=${crypto}USDT&range=${selectedRange}`
+        const rawData = await obtenerDatosGraficos(`${crypto}USDT`, rangeToLimit[selectedRange]);
+
+        const values = rawData.map(point => parseFloat(point[4]));
+        const labels = rawData.map(point =>
+          new Date(point[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         );
-        const data = await response.json();
-        // Assume data = [{ time: '7:00', value: 120 }, ...]
-        const values = data.map((point: any) => point.value);
-        const times = data.map((point: any) => point.time);
+
         setChartData(values);
-        setChartLabels(times);
+        setChartLabels(labels);
       } catch (error) {
-        console.error('Error fetching chart data:', error);
-        setChartData([]);
-        setChartLabels([]);
+        console.error('Error al obtener datos de gráfica:', error);
+        setChartData([0, 0, 0, 0, 0]);
+        setChartLabels(['', '', '', '', '']);
       }
     };
-    fetchChartData();
-  }, [selectedRange, crypto]);
 
-  const chartDataObject = {
-    labels: chartLabels,
-    datasets: [
-      {
-        data: chartData,
-        strokeWidth: 2,
-      },
-    ],
-  };
+    fetchGraphicData();
+  }, [crypto, selectedRange]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -122,22 +89,19 @@ export default function SimulationScreen() {
               inputMode="decimal"
               style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
               value={amount}
-              onChangeText={(value) => {
-                const numeric = value.replace(/[^0-9.]/g, '');
-                handleAmountChange(numeric);
-              }}
+              onChangeText={setAmount}
             />
             <View style={{ position: 'relative' }}>
               <TouchableOpacity
                 style={[styles.selector, styles.fixedSelector]}
-                onPress={() => setShowCryptoPicker((prev) => !prev)}
+                onPress={() => setShowCryptoPicker(prev => !prev)}
               >
                 <Text style={styles.selectorText}>{crypto}</Text>
                 <Ionicons name="chevron-down" size={16} color="#fff" />
               </TouchableOpacity>
               {showCryptoPicker && (
                 <View style={styles.dropdownOverlay}>
-                  {cryptoOptions.map((item) => (
+                  {['BTC', 'ETH', 'DOT', 'ATOM', 'SOL'].map(item => (
                     <TouchableOpacity
                       key={item}
                       style={styles.dropdownItem}
@@ -163,13 +127,10 @@ export default function SimulationScreen() {
               inputMode="decimal"
               style={[styles.input, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground }]}
               value={priceTotal}
-              onChangeText={(value) => {
-                const numeric = value.replace(/[^0-9.]/g, '');
-                handleCurrencyChange(numeric);
-              }}
+              onChangeText={setPriceTotal}
             />
             <TouchableOpacity style={styles.selector}>
-              <Text style={styles.selectorText}>${currency}</Text>
+              <Text style={styles.selectorText}>$MXN</Text>
               <Ionicons name="chevron-down" size={16} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -178,7 +139,7 @@ export default function SimulationScreen() {
           <TextInput
             style={[styles.inputFull, { color: Colors[colorScheme].text, backgroundColor: Colors[colorScheme].cardBackground, borderColor: Colors[colorScheme].primary }]}
             editable={false}
-            value={priceTotal}
+            value=""
           />
 
           <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Selecciona el período</Text>
@@ -186,21 +147,10 @@ export default function SimulationScreen() {
             {['1H', '1D', '1W', '1M', '1Y'].map((range) => (
               <TouchableOpacity
                 key={range}
-                style={[
-                  styles.rangeButton,
-                  {
-                    backgroundColor:
-                      selectedRange === range ? Colors[colorScheme].primary : Colors[colorScheme].cardBackground,
-                  },
-                ]}
+                style={[styles.rangeButton, { backgroundColor: selectedRange === range ? Colors[colorScheme].primary : Colors[colorScheme].cardBackground }]}
                 onPress={() => setSelectedRange(range)}
               >
-                <Text
-                  style={{
-                    color: selectedRange === range ? '#fff' : Colors[colorScheme].text,
-                    fontFamily: Fonts.medium,
-                  }}
-                >
+                <Text style={{ color: selectedRange === range ? '#fff' : Colors[colorScheme].text, fontFamily: Fonts.medium }}>
                   {range}
                 </Text>
               </TouchableOpacity>
@@ -209,7 +159,7 @@ export default function SimulationScreen() {
 
           <Text style={[styles.label, { color: Colors[colorScheme].text }]}>Revisa la gráfica</Text>
           <LineChart
-            data={chartDataObject}
+            data={{ labels: chartLabels, datasets: [{ data: chartData }] }}
             width={screenWidth - 40}
             height={220}
             chartConfig={{
@@ -296,7 +246,7 @@ const styles = StyleSheet.create({
   },
   fixedSelector: {
     width: 95,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   selectorText: {
     color: '#fff',
@@ -306,11 +256,6 @@ const styles = StyleSheet.create({
   chart: {
     borderRadius: 12,
     marginVertical: 20,
-  },
-  pickerContainer: {
-    width: 100,
-    borderRadius: 10,
-    overflow: 'hidden',
   },
   dropdownOverlay: {
     position: 'absolute',
